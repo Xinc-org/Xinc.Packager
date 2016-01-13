@@ -12,6 +12,12 @@ What is Xinc
 
 Xinc is a server system to manage continous integration and monitoring.
 
+What is Xinc.Packager
+---------------------
+
+Xinc.Packager is the manager over plugins and their state (active/inactive).
+
+
 Xinc System Requirements
 ------------------------
 
