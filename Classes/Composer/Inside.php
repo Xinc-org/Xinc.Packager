@@ -26,7 +26,7 @@ use Composer\Package\PackageInterface;
 class Inside
 {
     /** @type \Xinc\Packager\StatesManager The manager over package states. */
-    static private $statesManager = null;
+    private static $statesManager = null;
 
     /**
      * Called from composer before update/install of packages generally.
@@ -35,7 +35,7 @@ class Inside
      *
      * @return void
      */
-    static public function preUpdateAndInstall(CommandEvent $event)
+    public static function preUpdateAndInstall(CommandEvent $event)
     {
         if (static::$statesManager === null) {
             static::$statesManager = new \Xinc\Packager\StatesManager();
@@ -50,7 +50,7 @@ class Inside
      *
      * @return void
      */
-    static public function postUpdateAndInstall(CommandEvent $event)
+    public static function postUpdateAndInstall(CommandEvent $event)
     {
         if (static::$statesManager === null) {
             throw new \Exception('postUpdateAndInstall event without preUpdatePostAndInstall event.');
@@ -68,7 +68,7 @@ class Inside
      *
      * @return void
      */
-    static public function postPackageUpdateAndInstall(PackageEvent $event)
+    public static function postPackageUpdateAndInstall(PackageEvent $event)
     {
         if (static::$statesManager === null) {
             static::$statesManager = new \Xinc\Packager\StatesManager();
@@ -130,7 +130,7 @@ class Inside
      *
      * @return void
      */
-    static public function preAutoloadDump(Event $event)
+    public static function preAutoloadDump(Event $event)
     {
         $event->getIO()->write('preAutoloadDump called');
     }
@@ -142,7 +142,7 @@ class Inside
      *
      * @return \Xinc\Packager\Models\Package The Xinc.Packager package model.
      */
-    static function composerPackage2PackagerPackage(PackageInterface $composerPackage)
+    public static function composerPackage2PackagerPackage(PackageInterface $composerPackage)
     {
         $package = new \Xinc\Packager\Models\Package();
         $package->setName(static::composerPackage2PackagerPackageName($composerPackage));
@@ -161,7 +161,7 @@ class Inside
      *
      * @return string The name in Xinc.Packager format
      */
-    static function composerPackage2PackagerPackageName(PackageInterface $composerPackage)
+    public static function composerPackage2PackagerPackageName(PackageInterface $composerPackage)
     {
         $nameParts = preg_split('/\//', $composerPackage->getPrettyName(), -1, PREG_SPLIT_NO_EMPTY);
         $nameParts = array_map('ucfirst', $nameParts);

@@ -30,7 +30,9 @@ class Outside
         $vendorDir = $this->composer->getConfig()->get('vendor-dir');
         $jsonFile = new \Composer\Json\JsonFile($jsonDir . '/' . $vendorDir . '/composer/installed.json');
 
-        $this->composer->getRepositoryManager()->setLocalRepository(new \Composer\Repository\InstalledFilesystemRepository($jsonFile));
+        $this->composer->getRepositoryManager()->setLocalRepository(
+            new \Composer\Repository\InstalledFilesystemRepository($jsonFile)
+        );
     }
 
     public function isInstalled($package)
