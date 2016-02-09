@@ -35,6 +35,12 @@ class Outside
         );
     }
 
+    /**
+     * Tests if a package is already installed by composer.
+     *
+     * @param string $packageName Name of the package.
+     * @return boolean True if a package was found in local repository otherwise false.
+     */
     public function isInstalled($package)
     {
         if (count($this->composer->getRepositoryManager()->getLocalRepository()->findPackages($package))) {
@@ -42,5 +48,15 @@ class Outside
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns all installed composer packages.
+     *
+     * @return array Array of \Composer\Package\CompletePackage objects.
+     */
+    public function getPackages()
+    {
+        return $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
     }
 }
