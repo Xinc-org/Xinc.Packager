@@ -65,7 +65,7 @@ class Manager
     {
         $bridge = new Composer\Outside($this->composerBinDir, $this->composerJsonDir);
         $packages = $bridge->getPackages();
-        $versions = array();
+        $versions = array('composer' => \Composer\Composer::RELEASE_DATE);
         foreach ($packages as $package) {
             $versions[$package->getName()] = $package->getVersion();
         }
