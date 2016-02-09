@@ -32,7 +32,7 @@ class Cli
         $workingDir = dirname($_SERVER['argv'][0]);
 
         $opts = getopt(
-            'p:c:j:i:u:a:d:',
+            'p:c:j:i:u:a:d:vh',
             array(
                 'package-dir:',
                 'composer-bin-dir:',
@@ -45,11 +45,6 @@ class Cli
                 'help',
             )
         );
-
-        if (isset($opts['version'])) {
-            $this->showVersion();
-            exit();
-        }
 
         if (isset($opts['help'])) {
             $this->showHelp();
@@ -66,6 +61,7 @@ class Cli
                 'u' => 'uninstall',
                 'a' => 'activate',
                 'd' => 'deactivate',
+                'v' => 'version',
             ),
             array (
                 'package-dir' => $this->getPackageDir(),
@@ -137,6 +133,9 @@ class Cli
         if (isset($this->options['deactivate'])) {
             $managementOptionsSet++;
         }
+        if (isset($this->options['version'])) {
+            $managementOptionsSet++;
+        }
         if ($managementOptionsSet === 0) {
             throw new \Xinc\Packager\Exception('No management option set.');
         }
@@ -195,6 +194,16 @@ class Cli
     }
 
     /**
+     * Prints version number of installed packages.
+     *
+     * @return void
+     */
+    protected function showVersion()
+    {
+        echo '' . "\n";
+    }
+
+    /**
      * Prints help message, describing different parameters to run packager.
      *
      * @return void
@@ -210,7 +219,7 @@ class Cli
             . '  -u --uninstall=<package>     The package to remove.' . "\n"
             . '  -a --activate=<package>      The package to activate.' . "\n"
             . '  -d --deactivate=<package>    The package to deactivate.' . "\n"
-            . '  --version                    Prints the version of Xinc.' . "\n"
+            . '  -v --version                 Prints the version of Xinc and packages.' . "\n"
             . '  -h --help                    Prints this help message.' . "\n";
     }
 
@@ -239,6 +248,11 @@ class Cli
         if (isset($this->options['deactivate'])) {
             $manager->deactivate($this->options['deactivate']);
         }
+        if (isset($this->options['version'])) {
+            foreach($manager->version() as $name => $version) {
+                echo sprintf('  %-25s %s' . "\n", $name, $version);
+            }
+        }
     }
 
     /**
@@ -256,6 +270,7 @@ class Cli
             $cli->executeManagement();
         } catch (\Exception $e) {
             echo $e->getMessage() . "\n";
+            $cli->showHelp();
             exit(1);
         }
     }

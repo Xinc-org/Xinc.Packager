@@ -57,6 +57,22 @@ class Manager
     }
 
     /**
+     * Return versions of packages with composer.
+     *
+     * @return void
+     */
+    public function version()
+    {
+        $bridge = new Composer\Outside($this->composerBinDir, $this->composerJsonDir);
+        $packages = $bridge->getPackages();
+        $versions = array();
+        foreach ($packages as $package) {
+            $versions[$package->getName()] = $package->getVersion();
+        }
+        return $versions;
+    }
+
+    /**
      * Remove a package with composer.
      *
      * @return void
