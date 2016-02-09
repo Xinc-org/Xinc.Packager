@@ -132,7 +132,7 @@ class Inside
      */
     public static function preAutoloadDump(Event $event)
     {
-        $event->getIO()->write('preAutoloadDump called');
+        // @TODO Manipulate the packages for autoloader to represent state of active/inactive packages.
     }
 
     /**
