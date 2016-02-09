@@ -28,7 +28,7 @@ class Outside
         $this->composer = \Composer\Factory::create($this->io, $jsonDir . '/composer.json');
 
         $vendorDir = $this->composer->getConfig()->get('vendor-dir');
-        $jsonFile = new \Composer\Json\JsonFile($jsonDir . '/' . $vendorDir . '/composer/installed.json');
+        $jsonFile = new \Composer\Json\JsonFile($vendorDir . '/composer/installed.json');
 
         $this->composer->getRepositoryManager()->setLocalRepository(
             new \Composer\Repository\InstalledFilesystemRepository($jsonFile)
