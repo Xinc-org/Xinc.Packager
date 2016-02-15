@@ -22,6 +22,23 @@ class Persistence
     /** @type array Packages with their states for caching. */
     private $packages = null;
 
+    /** @type string Filename and path to PackageStates.php */
+    private $configDirectory = '';
+
+    /**
+     * Creates instance of the persistence class for PackageStates.php
+     *
+     * @param string $configDirectory Path to the PackageStates. If not given it will be automagicaly taken.
+     */
+    public function __construct($configDirectory = '')
+    {
+        if (empty($configDirectory)) {
+            $this->configDirectory = __DIR__ . '/../../../../Configuration';
+        } else {
+            $this->configDirectory = $configDirectory;
+        }
+    }
+
     /**
      * Get an array of all packages in the state file.
      *
@@ -116,12 +133,12 @@ class Persistence
      */
     public function getStatesPathAndFilename()
     {
-        $path = realpath(__DIR__ . '/../../../../Configuration');
+        $path = realpath($this->configDirectory);
         if ($path === false) {
-            @mkdir(__DIR__ . '/../../../../Configuration');
-            $path = realpath(__DIR__ . '/../../../../Configuration');
+            @mkdir($this->configDirectory);
+            $path = realpath($this->configDirectory);
             if ($path === false) {
-                throw new \Exception('Configuration path not found');
+                throw new \Exception('Configuration path ' . $this->configDirectory . ' not found or createable.');
             }
         }
         return $path . '/PackageStates.php';
