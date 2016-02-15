@@ -9,7 +9,7 @@
  * @package Xinc.Packager
  * @author  Alexander Opitz <opitz.alexander@googlemail.com>
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL 3+
- * @see     http://code.google.com/p/xinc/
+ * @see     https://github.com/Xinc-org/Xinc.Packager
  */
 
 namespace Xinc\Packager;

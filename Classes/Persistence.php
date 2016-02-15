@@ -9,7 +9,7 @@
  * @package Xinc.Packager
  * @author  Alexander Opitz <opitz.alexander@googlemail.com>
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL 3+
- * @see     http://code.google.com/p/xinc/
+ * @see     https://github.com/Xinc-org/Xinc.Packager
  */
 
 namespace Xinc\Packager;
@@ -22,6 +22,11 @@ class Persistence
     /** @type array Packages with their states for caching. */
     private $packages = null;
 
+    /**
+     * Get an array of all packages in the state file.
+     *
+     * @return array
+     */
     public function getPackages()
     {
         if ($this->packages === null) {
@@ -31,6 +36,11 @@ class Persistence
         return $this->packages;
     }
 
+    /**
+     * Get an array of all packages in the state file using the model class.
+     *
+     * @return Models\Package[]
+     */
     public function getPackagesAsClass()
     {
         if ($this->packages === null) {
@@ -53,6 +63,11 @@ class Persistence
         return $packagesAsClass;
     }
 
+    /**
+     * Reads the PackageState.php
+     *
+     * @return array Array as defined for PackageStates File version 4.
+     */
     public function readPackages()
     {
         $statesPathAndFilename = $this->getStatesPathAndFilename();
@@ -65,6 +80,12 @@ class Persistence
         }
     }
 
+    /**
+     * Writes the PackageState.php It adds a descriptional text to the PHP file.
+     *
+     * @param array Array of packages in the PackageStates 4 format.
+     * @return void
+     */
     public function writePackages($packages)
     {
         $this->packages = $packages;
@@ -88,6 +109,11 @@ class Persistence
         }
     }
 
+    /**
+     * Returns Filename and path for the PackageStates.php.
+     *
+     * @return string
+     */
     public function getStatesPathAndFilename()
     {
         $path = realpath(__DIR__ . '/../../../../Configuration');
