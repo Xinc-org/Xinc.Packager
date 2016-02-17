@@ -16,6 +16,7 @@ namespace Xinc\Packager;
 
 /**
  * Management over the PackageStates.php
+ * @TODO Have package States without install Mode.
  */
 class StatesManager
 {
@@ -63,7 +64,7 @@ class StatesManager
     public function addPackage(Models\Package $package)
     {
         if (isset($this->packages[$package->getName()])) {
-            throw new \Exception('Package ' . $package->getName() . ' already exists');
+            throw new \Exception('Package ' . $package->getName() . ' already exists in PackageStates.php.');
         }
         $this->packages[$package->getName()] = array(
             'manifestPath' => $package->getPathManifest(),
@@ -77,7 +78,7 @@ class StatesManager
     public function updatePackage(Models\Package $package)
     {
         if (!isset($this->packages[$package->getName()])) {
-            throw new \Exception('Package ' . $package->getName() . ' does not exists');
+            throw new \Exception('Package ' . $package->getName() . ' does not exists in PackageStates.php.');
         }
         $this->packages[$package->getName()] = array(
             'manifestPath' => $package->getPathManifest(),
@@ -88,10 +89,19 @@ class StatesManager
         );
     }
 
+    public function getPackage($packageName)
+    {
+        if (!isset($this->packages[$package->getName()])) {
+            throw new \Exception('Package ' . $package->getName() . ' does not exists in PackageStates.php.');
+        }
+
+        return $this->packages[$package->getName()];
+    }
+
     public function removePackage($packageName)
     {
         if (!isset($this->packages[$package->getName()])) {
-            throw new \Exception('Package ' . $package->getName() . ' does not exists');
+            throw new \Exception('Package ' . $package->getName() . ' does not exists in PackageStates.php.');
         }
         unset($this->packages[$package->getName()]);
     }

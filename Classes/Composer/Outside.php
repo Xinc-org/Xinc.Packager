@@ -41,13 +41,25 @@ class Outside
      * @param string $packageName Name of the package.
      * @return boolean True if a package was found in local repository otherwise false.
      */
-    public function isInstalled($package)
+    public function isInstalled($packageName)
     {
-        if (count($this->composer->getRepositoryManager()->getLocalRepository()->findPackages($package))) {
+        if (count($this->composer->getRepositoryManager()->getLocalRepository()->findPackages($packageName))) {
             return true;
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Returns the package if installed by composer.
+     *
+     * @param string $packageName Name of the package.
+     * @return Composer\Package\PackageInterface Null if package was not found.
+     */
+    public function getPackage($packageName)
+    {
+        return $this->composer->getRepositoryManager()->getLocalRepository()->findPackage($packageName);
     }
 
     /**

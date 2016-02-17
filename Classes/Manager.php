@@ -45,11 +45,13 @@ class Manager
     /**
      * Install a package with composer.
      *
+     * @param string $name Name of package in composer!!
      * @return void
+     * @TODO Can we have Real package name instead of composer ones?
      */
     public function install($name)
     {
-        $bridge = new Composer\Outside($this->composerBinDir, $this->composerJsonDir);
+        $bridge = $this->getBridge();
         if ($bridge->isInstalled($name)) {
             throw new Exception('Package "' . $name . '" already installed.');
         }
@@ -63,8 +65,7 @@ class Manager
      */
     public function version()
     {
-        $bridge = new Composer\Outside($this->composerBinDir, $this->composerJsonDir);
-        $packages = $bridge->getPackages();
+        $packages = $this->getBridge()->getPackages();
         $versions = array('composer' => \Composer\Composer::RELEASE_DATE);
         foreach ($packages as $package) {
             $versions[$package->getName()] = $package->getVersion();
@@ -79,26 +80,45 @@ class Manager
      */
     public function deinstall($name)
     {
-        throw new Exception('Not yet implemented.');
+        $bridge = $this->getBridge();
+        if (!$bridge->isInstalled($name)) {
+            throw new Exception('Package "' . $name . '" is not installed installed.');
+        }
+        throw new Exception('Not yet implemented. Use "composer remove ' . $name . '"');
     }
 
     /**
      * Activates a package in PackageStates.php and composers ClassLoader.
      *
      * @return void
+     * @TODO No dependency chack yet.
      */
     public function activate($name)
     {
-        throw new Exception('Not yet implemented.');
+        $statesManager = new StatesManager();
+        $statesManager->startInstallMode();
+        $package = $statesManager->getPackage($name);
+        $package->setStateActive();
+        $statesManager->stopInstallMode();
     }
 
     /**
      * Deactivates a package in PackageStates.php and composers ClassLoader.
      *
      * @return void
+     * @TODO No dependency chack yet.
      */
     public function deactivate($name)
     {
-        throw new Exception('Not yet implemented.');
+        $statesManager = new StatesManager();
+        $statesManager->startInstallMode();
+        $package = $statesManager->getPackage($name);
+        $package->setStateInactive();
+        $statesManager->stopInstallMode();
+    }
+
+    public function getBridge()
+    {
+        return new Composer\Outside($this->composerBinDir, $this->composerJsonDir);
     }
 }
